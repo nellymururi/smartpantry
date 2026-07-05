@@ -28,8 +28,7 @@ const SmartBasket = () => {
       {/* Ambient glow — no spin */}
       <div style={{
         position: 'absolute', inset: '-28px', borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, rgba(16,185,129,0.05) 55%, transparent 70%)',
-        filter: 'blur(22px)',
+background: 'radial-gradient(circle, rgba(139,32,32,0.18) 0%, rgba(26,58,107,0.08) 55%, transparent 70%)',        filter: 'blur(22px)',
         animation: 'spGlow 3s ease-in-out infinite',
         pointerEvents: 'none',
       }} />

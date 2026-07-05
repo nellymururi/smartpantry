@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { getPatternDataUrl } from './AfricanPattern';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -10,83 +12,158 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div style={{
-      position: 'fixed', top: '24px', left: 0, right: 0,
+    <header style={{
+      position: 'fixed', top: 0, left: 0, right: 0,
       zIndex: 100,
-      display: 'flex', justifyContent: 'center',
-      padding: '0 24px',
-      pointerEvents: 'none',
+      borderBottom: '1px solid rgba(245,158,11,0.12)',
+      transition: 'background 0.5s ease, backdrop-filter 0.5s ease',
+      background: scrolled ? 'rgba(13,10,4,0.92)' : 'rgba(13,10,4,0.75)',
+      backdropFilter: 'blur(32px)',
+      WebkitBackdropFilter: 'blur(32px)',
+      overflow: 'hidden',
     }}>
-      {/* Gradient border pill wrapper */}
+
+      {/* Pattern strip at bottom — mirrors footer top strip */}
       <div style={{
-        pointerEvents: 'all',
-        borderRadius: '100px',
-        padding: '1px',
-        background: scrolled
-          ? 'linear-gradient(135deg, rgba(245,158,11,0.7), rgba(16,185,129,0.35), rgba(245,158,11,0.7))'
-          : 'linear-gradient(135deg, rgba(245,158,11,0.28), rgba(16,185,129,0.14), rgba(245,158,11,0.28))',
-        boxShadow: scrolled ? '0 8px 48px rgba(0,0,0,0.55), 0 0 24px rgba(245,158,11,0.07)' : 'none',
-        transition: 'background 0.5s, box-shadow 0.5s',
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: '2px',
+        background: 'linear-gradient(90deg, transparent, #F59E0B, #C84B31, #1B4F8A, #F59E0B, transparent)',
+        opacity: 0.5,
+      }} />
+
+      {/* Faint pattern background */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        backgroundImage: getPatternDataUrl('#C9980A'),
+        backgroundRepeat: 'repeat', backgroundSize: '200px 200px',
+        opacity: 0.025,
+      }} />
+
+      <div style={{
+        maxWidth: '1200px', margin: '0 auto',
+        padding: '0 32px',
+        height: '68px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        position: 'relative',
       }}>
-        <nav style={{
-          borderRadius: '100px',
-          background: scrolled ? 'rgba(2,10,6,0.94)' : 'rgba(2,10,6,0.78)',
-          backdropFilter: 'blur(28px)',
-          WebkitBackdropFilter: 'blur(28px)',
-          padding: '11px 24px',
-          display: 'flex', alignItems: 'center', gap: '28px',
-          transition: 'background 0.5s',
-        }}>
 
-          {/* Logo */}
-          <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <div style={{
-              width: '26px', height: '26px', borderRadius: '7px', fontSize: '13px',
-              background: 'linear-gradient(135deg, rgba(245,158,11,0.18), rgba(16,185,129,0.12))',
-              border: '1px solid rgba(245,158,11,0.28)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>🥘</div>
-            <span style={{
-              fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '15px',
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(135deg, #F59E0B, #d97706)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-            }}>Smart</span>
-            <span style={{
-              fontFamily: "'Syne', sans-serif", fontWeight: 400, fontSize: '15px',
-              letterSpacing: '-0.02em',
-              color: 'rgba(255,255,255,0.38)',
-              marginLeft: '-4px',
-            }}>Pantry</span>
-          </a>
+        {/* Logo */}
+        <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            width: '32px', height: '32px', borderRadius: '9px',
+            background: 'linear-gradient(135deg, #F59E0B, #d97706)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '16px', flexShrink: 0,
+          }}>🥘</div>
+          <span style={{
+            fontFamily: "'Syne', sans-serif", fontWeight: 900, fontSize: '18px',
+            letterSpacing: '-0.02em',
+            background: 'linear-gradient(135deg, #fde68a, #F59E0B)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          }}>Smart</span>
+          <span style={{
+            fontFamily: "'Syne', sans-serif", fontWeight: 300, fontSize: '18px',
+            letterSpacing: '-0.02em', marginLeft: '-4px',
+            color: 'rgba(255,248,235,0.45)',
+          }}>Pantry</span>
+        </a>
 
-          {/* Nav links */}
+        {/* Desktop nav */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }} className="desktop-nav">
           {['Home', 'Features', 'About'].map(link => (
             <a key={link} href={`#${link.toLowerCase()}`}
               style={{
-                fontSize: '13px', fontWeight: 500, letterSpacing: '0.01em',
-                color: 'rgba(255,255,255,0.42)', transition: 'color 0.2s',
+                fontSize: '14px', fontWeight: 500,
+                color: 'rgba(255,248,235,0.45)',
+                padding: '7px 14px', borderRadius: '8px',
+                transition: 'all 0.2s ease',
               }}
-              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.9)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.42)'}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = 'rgba(255,248,235,0.9)';
+                e.currentTarget.style.background = 'rgba(255,248,235,0.06)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = 'rgba(255,248,235,0.45)';
+                e.currentTarget.style.background = 'transparent';
+              }}
             >{link}</a>
           ))}
 
-          {/* CTA */}
+          {/* Divider */}
+          <div style={{
+            width: '1px', height: '20px', margin: '0 8px',
+            background: 'rgba(255,248,235,0.1)',
+          }} />
+
+          {/* CTA — red */}
           <a href="#auth" style={{
-            display: 'inline-flex', alignItems: 'center',
-            padding: '8px 18px', borderRadius: '100px',
-            fontSize: '13px', fontWeight: 700, letterSpacing: '0.02em',
-            color: '#020a06', background: 'linear-gradient(135deg, #F59E0B, #d97706)',
-            boxShadow: '0 0 16px rgba(245,158,11,0.28)',
-            transition: 'box-shadow 0.3s, transform 0.2s', whiteSpace: 'nowrap',
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            padding: '9px 22px', borderRadius: '9px',
+            fontSize: '14px', fontWeight: 700, letterSpacing: '0.01em',
+            color: '#ffffff',
+            background: 'linear-gradient(135deg, #C84B31, #a83828)',
+            boxShadow: '0 0 20px rgba(200,75,49,0.3)',
+            transition: 'all 0.25s ease', whiteSpace: 'nowrap',
           }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 30px rgba(245,158,11,0.55)'; e.currentTarget.style.transform = 'scale(1.04)'; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 0 16px rgba(245,158,11,0.28)'; e.currentTarget.style.transform = 'scale(1)'; }}
-          >Get Started</a>
+            onMouseEnter={e => {
+              e.currentTarget.style.boxShadow = '0 0 32px rgba(200,75,49,0.55)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(200,75,49,0.3)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >Get Started </a>
         </nav>
+
+        {/* Mobile toggle */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="mobile-btn"
+          style={{
+            display: 'none', background: 'none', border: 'none',
+            color: '#F59E0B', fontSize: '22px', cursor: 'pointer',
+          }}
+        >{menuOpen ? '✕' : '☰'}</button>
       </div>
-    </div>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div style={{
+          padding: '16px 32px 24px',
+          background: 'rgba(13,10,4,0.98)',
+          borderTop: '1px solid rgba(245,158,11,0.1)',
+          display: 'flex', flexDirection: 'column', gap: '4px',
+        }}>
+          {['Home', 'Features', 'About'].map(link => (
+            <a key={link} href={`#${link.toLowerCase()}`}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                fontSize: '14px', fontWeight: 500,
+                color: 'rgba(255,248,235,0.55)',
+                padding: '10px 12px', borderRadius: '8px',
+              }}
+            >{link}</a>
+          ))}
+          <a href="#auth"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              marginTop: '8px', padding: '12px',
+              borderRadius: '9px', textAlign: 'center',
+              fontSize: '14px', fontWeight: 700,
+              color: '#ffffff',
+              background: 'linear-gradient(135deg, #C84B31, #a83828)',
+            }}
+          >Get Started </a>
+        </div>
+      )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-btn { display: block !important; }
+        }
+      `}</style>
+    </header>
   );
 };
 
